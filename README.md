@@ -21,7 +21,7 @@ Performance of SuperStore stores through the US between 2014 and 2017
    | Date Range | January 2014 - December 2017 |
    | Granularity | One row per product per order |  
   
-3. ### Data Dictionary  
+2. ### Data Dictionary  
    | # | Column  | Type  |   Description |
    | --- | ---------  | ------- | -------- |
    | 1 | Row ID | INT | Unique Row Identifier  |
@@ -48,7 +48,7 @@ Performance of SuperStore stores through the US between 2014 and 2017
    | 22 | Discount | DECIMAL(3,2) | Discount applied (0.0 - 0.8) |
    | 23 | Profit | DECIMAL(10,4) | Profit or loss from sale  |  
   
-4. ### Important Issues and Resolutions  
+3. ### Important Issues and Resolutions  
    | # | Issue  | Resolution  |   Outcome |
    | --- | ---------  | ------- | -------- |
    | 1 | UTF- 8 BOM encoding error in MySQL workbench wizard | Switched to phpMyAdmin import tab | Encoding handled correctly |
@@ -56,7 +56,7 @@ Performance of SuperStore stores through the US between 2014 and 2017
    | 3 | Sales Column out of range (#1264) | Altered Sales column from DECIMAL(8,4) to DECIMAL(10,2) | Import complete without errors |
    | 4 | max_allowed_packet too small for full dataset | Increased max_allowed_packet to 64mB in phpMyAdmin | Full dataset import successful |  
   
-5. ### Data Type Corrections  
+4. ### Data Type Corrections  
    | Column | Original Type  | Corrected Type  |   Reason |
    | --- | ---------  | ------- | -------- |
    | Order Date | VARCHAR(10) | DATE | Required for ship date vs order date validation |
@@ -77,35 +77,39 @@ Performance of SuperStore stores through the US between 2014 and 2017
    ```  
    **Format Used:** %c/%e/%Y — handles dates without leading zeros (e.g., 11/8/2016)  
    **Original columns retained for reference and verification**  
-  
-6. ### Data Verification Checks  
+    
+5. ### Data Verification Checks
+     
    5.1 Order ID -> Customer ID integrity  
    **Question:** Does each Order ID map to exactly one Customer ID?  
    **Risk:** An oder belonging to multiple customers would indicate a data integrity issue  
-  
+    
    ``` {sql}
    SELECT `Order ID`
    FROM sample__superstore
    GROUP BY `Order ID`
    HAVING COUNT(DISTINCT `Customer ID`) > 1
-   ```  
-  
+   ```    
+    
    **Result:** 0 violations - every Order ID corresponds to exactly 1 Customer ID  
-   5.2 Invalid ship dates  
+     
+   5.2 Invalid ship dates
+     
    **Question:** Are there any orders whose ship dates precede Order Date?  
    **Risk:** A ship date before an order date is logically impossible and would indicate bad data  
-  
+    
    ``` {sql}
    SELECT `Order ID`, cleaned_order_date, cleaned_ship_date
    FROM sample__superstore
    WHERE cleaned_ship_date < cleaned_order_date
    ```  
    **Result:** 0 violations - all shipments occur on or after order date   
-  
-   5.3 White Space Validation  
+    
+   5.3 White Space Validation
+     
    **Question:** Do any text column contain leading or trailing whitespace?  
    **Risk:** Extra white space causes GROUP BY and JOIN mismatches in analysis  
-  
+    
    ``` {sql}
    SELECT `City` FROM sample___superstore WHERE `City` != TRIM(`City`);
    SELECT `State` FROM sample___superstore WHERE `State` != TRIM(`State`);
@@ -113,18 +117,20 @@ Performance of SuperStore stores through the US between 2014 and 2017
    SELECT `Product Name` FROM sample___superstore WHERE `Product Name` != TRIM(`Product Name`);
    ```
    **Result:** 0 violations across all checked text columns.  
-  
-   5.4 Negative sales values  
+    
+   5.4 Negative sales values
   
    **Question:** Are there any negative sales values?  
    **Risk:** Negative sales values would skew analysis results in this context  
-
+  
    ``` {sql}
    SELECT COUNT(*) AS negative_sales_count
    FROM sample___superstore
    WHERE Sales < 0
-   ```  
+   ```
+     
    5.5 Null Value Check  
+     
    **Question:** Are there any null values in Sales, Profit or date columns?  
    **Risk:** Null values in critical columns (Sales, Profit, dates) would cause incorrect aggregations  
    Conditional Formatting in Excel to highlight any blank columns  
