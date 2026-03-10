@@ -38,7 +38,7 @@ Performance of SuperStore stores throughout the US between January 2014 and Dece
    | 12 | City | VARCHAR(17) | City of delivery  |
    | 13 | State | VARCHAR(20) | State of delivery |
    | 14 | Postal Code | varchar(5) | Postal Code of delivery  |
-   | 15 | Region | VARCHAR(7) | US Region (Central, East, West, South  |
+   | 15 | Region | VARCHAR(7) | US Region (Central, East, West, South)  |
    | 16 | Product ID | VARCHAR(15) | Unique Product Identifier  |
    | 17 | Category | VARCHAR(15) | Product Category (Furniture, Office Supplies, Technology) |
    | 18 | Sub-Category | VARCHAR(11) | Product Sub-Category |
@@ -61,7 +61,7 @@ Performance of SuperStore stores throughout the US between January 2014 and Dece
    | --- | ---------  | ------- | -------- |
    | Order Date | VARCHAR(10) | DATE | Required for ship date vs order date validation |
    | Ship Date | VARCHAR(10) | DATE | Required for time-based analysis and date comparison |
-   | Sales | DECIMAL(8,4) | DECIMAL(10,2) | Original Percision too small for large order values |  
+   | Sales | DECIMAL(8,4) | DECIMAL(10,2) | Original Precision too small for large order values |  
   
    #### Date Conversion Method  
   
