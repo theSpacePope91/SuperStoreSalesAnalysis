@@ -137,8 +137,8 @@ Performance of SuperStore stores throughout the US between January 2014 and Dece
    **Result:** 0 violations in critical columns  
   
 7. ### Notable Data Observations  
-      | Observation | Detail | Action Taken |
-   | --- | ---------  | ------- | -------- |
+   | Observation | Detail | Action Taken |
+   | --- | ---------  | ------- |
    | Discount Values reach 0.80 (80%) | Found in Central region — order Row ID 15 shows 80% discount on a $68.81 item resulting in -$123.86 profit | Retained for analysis — flagged as key finding |
    | Multiple rows per Order ID | Expected behavior — one row per line item purchased | Documented as intentional design, not a data error |
    | Profit can be negative| 1,900 rows have negative profit values | Expected — discounts cause losses, retained for analysis |
